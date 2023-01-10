@@ -3,6 +3,7 @@ package com.sparta.boardprac.comment.service;
 import com.sparta.boardprac.comment.dto.RequestCommentDto;
 import com.sparta.boardprac.comment.entity.Comment;
 import com.sparta.boardprac.comment.repository.CommentRepository;
+import com.sparta.boardprac.like.repository.CommentLikeRepository;
 import com.sparta.boardprac.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
     @Override
@@ -39,6 +41,7 @@ public class CommentServiceImpl implements CommentService{
     @Transactional
     @Override
     public void deleteCommentById(Long commentId, User user) {
+        commentLikeRepository.deleteCommentLikeByCommentIdAndUserId(commentId, user.getId());
         commentRepository.deleteCommentByIdAndUserId(commentId, user.getId());
     }
 }
