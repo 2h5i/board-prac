@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
@@ -87,14 +87,7 @@ public class PostServiceImpl implements PostService{
                 () -> new IllegalArgumentException("삭제할 게시글이 존재하지 않습니다.")
         );
 
-        List<Comment> comments = commentRepository.findCommentsByPostId(postId);
-        List<Long> commentIds = comments.stream().map(Comment::getId).toList();
-
-        commentLikeRepository.deleteCommentLikesByCommentIdIn(commentIds);
-        commentRepository.deleteCommentsByPostId(postId);
-        postLikeRepository.deletePostLikeByPostIdAndUserId(postId, user.getId());
-        postRepository.delete(post);
-
+        deletePost(post);
     }
 
     @Transactional
@@ -103,8 +96,18 @@ public class PostServiceImpl implements PostService{
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("삭제할 게시글이 존재하지 않습니다.")
         );
+
+        deletePost(post);
+    }
+
+    private void deletePost(final Post post) {
+        List<Comment> comments = commentRepository.findCommentsByPostId(post.getId());
+        List<Long> commentIds = comments.stream().map(Comment::getId).toList();
+
+        commentLikeRepository.deleteCommentLikesByCommentIdIn(commentIds);
+        commentRepository.deleteCommentsByPostId(post.getId());
+        postLikeRepository.deletePostLikesByPostId(post.getId());
         postRepository.delete(post);
-        commentRepository.deleteCommentsByPostId(postId);
     }
 
 }

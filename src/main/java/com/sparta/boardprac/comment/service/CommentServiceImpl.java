@@ -59,12 +59,15 @@ public class CommentServiceImpl implements CommentService{
     @Transactional
     @Override
     public void deleteCommentById(final Long commentId, final User user) {
+        Comment comment = commentRepository.findCommentByIdAndUserId(commentId, user.getId()).orElseThrow(
+                () -> new IllegalArgumentException("삭제할 댓글이 없습니다.")
+        );
         List<Comment> childrenComments = commentRepository.findCommentsByParentId(commentId);
         List<Long> childrenCommentIds = childrenComments.stream().map(Comment::getId).toList();
 
         commentLikeRepository.deleteCommentLikesByCommentIdIn(childrenCommentIds);
         commentLikeRepository.deleteCommentLikeByCommentId(commentId);
         commentRepository.deleteAll(childrenComments);
-        commentRepository.deleteCommentByIdAndUserId(commentId, user.getId());
+        commentRepository.delete(comment);
     }
 }
