@@ -20,7 +20,7 @@ public class ResponsePosWithCommentstDto {
     private LocalDateTime modifiedAt;
 
     @Builder
-    public ResponsePosWithCommentstDto(Post post, List<Comment> comments) {
+    public ResponsePosWithCommentstDto(final Post post, final List<Comment> comments) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();

@@ -38,14 +38,14 @@ public class User {
     private String refreshToken;
 
     @Builder
-    public User(String username, String password, String email, UserRole userRole) {
+    public User(final String username, final String password, final String email, final UserRole userRole) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.userRole = userRole;
     }
 
-    public void updateRefreshToken(String refreshToken) {
+    public void updateRefreshToken(final String refreshToken) {
         this.refreshToken = refreshToken;
     }
 

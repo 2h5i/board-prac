@@ -15,7 +15,7 @@ public class ResponseCommnetDto {
     private LocalDateTime modifiedAt;
     private Long userId;
 
-    public ResponseCommnetDto(Comment comment) {
+    public ResponseCommnetDto(final Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
         this.createdAt = comment.getCreatedAt();
@@ -23,11 +23,11 @@ public class ResponseCommnetDto {
         this.userId = comment.getUserId();
     }
 
-    public static ResponseCommnetDto of(Comment comment) {
+    public static ResponseCommnetDto of(final Comment comment) {
         return new ResponseCommnetDto(comment);
     }
 
-    public static List<ResponseCommnetDto> of(List<Comment> comments) {
+    public static List<ResponseCommnetDto> of(final List<Comment> comments) {
         return comments.stream().map(ResponseCommnetDto::of).collect(Collectors.toList());
     }
 }

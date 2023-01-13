@@ -26,7 +26,7 @@ public class LikeController {
         likeService.postLike(postId, userDetails.getUser());
     }
 
-    @PostMapping("/comment/{commentId}")
+    @PostMapping("/comment/{commentId}/post/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
     public void commentLike(@PathVariable final Long commentId, @AuthenticationPrincipal final UserDetailsImpl userDetails) {
         likeService.commentLike(commentId, userDetails.getUser());

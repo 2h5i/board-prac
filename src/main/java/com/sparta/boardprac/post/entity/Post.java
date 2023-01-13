@@ -31,13 +31,13 @@ public class Post extends BaseEntity {
     private String username;
 
     @Builder
-    public Post(String title, String content, String username) {
+    public Post(final String title, final String content, final String username) {
         this.title = title;
         this.content = content;
         this.username = username;
     }
 
-    public void update(String title, String content) {
+    public void update(final String title, final String content) {
         this.title = title;
         this.content = content;
     }

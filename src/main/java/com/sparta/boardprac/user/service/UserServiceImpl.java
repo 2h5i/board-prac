@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public UserSignupResponseDto signup(SignupRequestDto signupRequestDto) {
+    public UserSignupResponseDto signup(final SignupRequestDto signupRequestDto) {
         validateDuplicated(signupRequestDto.getUsername());
 
         // 사용자 ROLE 확인
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional(readOnly = true)
     @Override
-    public UserLoginResponseDto login(LoginRequestDto loginRequestDto) {
+    public UserLoginResponseDto login(final LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public TokenResponseDto reIssue(TokenRequestDto tokenRequestDto) {
+    public TokenResponseDto reIssue(final TokenRequestDto tokenRequestDto) {
         if(!jwtUtil.validateTokenExceptExpiration(tokenRequestDto.getRefreshToken())){
             throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
         }
@@ -97,13 +97,13 @@ public class UserServiceImpl implements UserService{
     }
 
     // 중복 사용자 확인
-    public void validateDuplicated(String username) {
+    public void validateDuplicated(final String username) {
         if(userRepository.findByUsername(username).isPresent()) {
             throw new IllegalArgumentException("이미 사용자가 존재합니다.");
         }
     }
 
-    private User findUserByToken(TokenRequestDto tokenRequestDto) {
+    private User findUserByToken(final TokenRequestDto tokenRequestDto) {
         Claims claims = jwtUtil.getUserInfoFromToken(tokenRequestDto.getAccessToken().substring(7));
         String username = claims.getSubject();
         return userRepository.findByUsername(username).orElseThrow(

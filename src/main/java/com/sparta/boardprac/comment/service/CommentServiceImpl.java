@@ -18,7 +18,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     @Override
-    public Long createComment(Long postId, RequestCommentDto requestCommentDto, User user) {
+    public Long createComment(final Long postId, final RequestCommentDto requestCommentDto, final User user) {
         Comment comment = Comment.builder()
                 .postId(postId)
                 .userId(user.getId())
@@ -30,7 +30,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     @Override
-    public void updateCommentById(Long commentId, RequestCommentDto requestCommentDto, User user) {
+    public void updateCommentById(final Long commentId, final RequestCommentDto requestCommentDto, final User user) {
         Comment comment = commentRepository.findCommentByIdAndUserId(commentId, user.getId()).orElseThrow(
                 () -> new IllegalArgumentException("댓글이 존재하지 않습니다.")
         );
@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Transactional
     @Override
-    public void deleteCommentById(Long commentId, User user) {
+    public void deleteCommentById(final Long commentId, final User user) {
         commentLikeRepository.deleteCommentLikeByCommentIdAndUserId(commentId, user.getId());
         commentRepository.deleteCommentByIdAndUserId(commentId, user.getId());
     }

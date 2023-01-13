@@ -8,7 +8,7 @@ public class UserLoginResponseDto {
     private String accessToken;
     private String refreshToken;
 
-    public UserLoginResponseDto(Long id, String accessToken, String refreshToken) {
+    public UserLoginResponseDto(final Long id, final String accessToken, final String refreshToken) {
         this.id = id;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
