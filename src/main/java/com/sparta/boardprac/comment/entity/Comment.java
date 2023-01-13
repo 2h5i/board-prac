@@ -29,11 +29,15 @@ public class Comment extends BaseEntity {
     @Column(nullable = false)
     private String content;
 
+    @Column
+    private Long parentId;
+
     @Builder
-    public Comment(final Long postId, final Long userId, final String content) {
+    public Comment(final Long postId, final Long userId, final String content, Long parentId) {
         this.postId = postId;
         this.userId = userId;
         this.content = content;
+        this.parentId = parentId;
     }
 
     public void update(final String content) {

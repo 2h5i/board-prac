@@ -24,24 +24,32 @@ public class CommentController {
 
     @PostMapping("/post/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createComment(@PathVariable Long postId,
-                              @RequestBody RequestCommentDto requestCommentDto,
-                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public Long createComment(@PathVariable final Long postId,
+                              @RequestBody final RequestCommentDto requestCommentDto,
+                              @AuthenticationPrincipal final UserDetailsImpl userDetails) {
         return commentService.createComment(postId, requestCommentDto, userDetails.getUser());
+    }
+
+    @PostMapping("/reply/{parentId}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long createReplyComment(@PathVariable final Long parentId,
+                                   @RequestBody final RequestCommentDto requestCommentDto,
+                                   @AuthenticationPrincipal final UserDetailsImpl userDetails) {
+        return  commentService.createReplyComment(parentId, requestCommentDto, userDetails.getUser());
     }
 
     @PutMapping("/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateCommentById(@PathVariable Long commentId,
-                              @RequestBody RequestCommentDto requestCommentDto,
-                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void updateCommentById(@PathVariable final Long commentId,
+                              @RequestBody final RequestCommentDto requestCommentDto,
+                              @AuthenticationPrincipal final UserDetailsImpl userDetails) {
         commentService.updateCommentById(commentId, requestCommentDto, userDetails.getUser());
     }
 
-    @DeleteMapping("/commentId")
+    @DeleteMapping("/{commentId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteCommentById(@PathVariable Long commentId,
-                                  @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public void deleteCommentById(@PathVariable final Long commentId,
+                                  @AuthenticationPrincipal final UserDetailsImpl userDetails) {
         commentService.deleteCommentById(commentId, userDetails.getUser());
     }
 

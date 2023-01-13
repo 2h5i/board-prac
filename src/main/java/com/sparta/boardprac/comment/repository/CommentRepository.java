@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+
     void deleteCommentsByPostId(@NonNull Long postId);
 
     List<Comment> findCommentsByPostIdOrderByCreatedAtDesc(Long postId);
@@ -17,4 +18,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     void deleteCommentByIdAndUserId(Long commentId, Long userId);
 
     List<Comment> findCommentsByPostId(Long postId);
+
+    List<Comment> findCommentsByParentId(Long parentId);
+
 }

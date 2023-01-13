@@ -88,10 +88,9 @@ public class PostServiceImpl implements PostService{
         );
 
         List<Comment> comments = commentRepository.findCommentsByPostId(postId);
-        for (Comment comment : comments) {
-            // TODO : querydsl로 바꾸기
-            commentLikeRepository.deleteCommentLikeByCommentIdAndUserId(comment.getId(), user.getId());
-        }
+        List<Long> commentIds = comments.stream().map(Comment::getId).toList();
+
+        commentLikeRepository.deleteCommentLikesByCommentIdIn(commentIds);
         commentRepository.deleteCommentsByPostId(postId);
         postLikeRepository.deletePostLikeByPostIdAndUserId(postId, user.getId());
         postRepository.delete(post);

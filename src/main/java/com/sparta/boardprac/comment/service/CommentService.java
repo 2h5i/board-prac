@@ -7,6 +7,8 @@ public interface CommentService {
 
     Long createComment(Long postId, RequestCommentDto requestCommentDto, User user);
 
+    Long createReplyComment(Long parentId, RequestCommentDto requestCommentDto, User user);
+
     void updateCommentById(Long commentId, RequestCommentDto requestCommentDto, User user);
 
     void deleteCommentById(Long commentId, User user);
