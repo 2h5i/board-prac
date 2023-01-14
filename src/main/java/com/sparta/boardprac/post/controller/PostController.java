@@ -3,7 +3,7 @@ package com.sparta.boardprac.post.controller;
 import com.sparta.boardprac.common.core.PageWrapper;
 import com.sparta.boardprac.common.security.UserDetailsImpl;
 import com.sparta.boardprac.post.dto.RequestPostDto;
-import com.sparta.boardprac.post.dto.ResponsePosWithCommentstDto;
+import com.sparta.boardprac.post.dto.ResponsePostWithCommentsDto;
 import com.sparta.boardprac.post.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class PostController {
 
     @GetMapping("/posts/{postId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponsePosWithCommentstDto getPostById(@PathVariable final Long postId) {
+    public ResponsePostWithCommentsDto getPostById(@PathVariable final Long postId) {
         return postService.getPostById(postId);
     }
 

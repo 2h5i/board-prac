@@ -10,21 +10,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-public class ResponsePosWithCommentstDto {
+public class ResponsePostWithCommentsDto {
     private Long id;
     private String title;
     private String content;
     private String username;
+    private Long likeCount;
     private List<ResponseCommnetDto> comments;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
     @Builder
-    public ResponsePosWithCommentstDto(final Post post, final List<Comment> comments) {
+    public ResponsePostWithCommentsDto(final Post post, final List<Comment> comments,final Long likeCount) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.content = post.getContent();
         this.username = post.getUsername();
+        this.likeCount = likeCount;
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.comments = ResponseCommnetDto.of(comments);

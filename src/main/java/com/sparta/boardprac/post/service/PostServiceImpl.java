@@ -5,17 +5,19 @@ import com.sparta.boardprac.comment.repository.CommentRepository;
 import com.sparta.boardprac.like.repository.CommentLikeRepository;
 import com.sparta.boardprac.like.repository.PostLikeRepository;
 import com.sparta.boardprac.post.dto.RequestPostDto;
-import com.sparta.boardprac.post.dto.ResponsePosWithCommentstDto;
 import com.sparta.boardprac.post.dto.ResponsePostDto;
+import com.sparta.boardprac.post.dto.ResponsePostWithCommentsDto;
 import com.sparta.boardprac.post.entity.Post;
 import com.sparta.boardprac.post.repository.PostRepository;
 import com.sparta.boardprac.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -41,14 +43,16 @@ public class PostServiceImpl implements PostService {
 
     @Transactional
     @Override
-    public ResponsePosWithCommentstDto getPostById(final Long postId) {
+    public ResponsePostWithCommentsDto getPostById(final Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 게시물입니다.")
         );
         List<Comment> comments = commentRepository.findCommentsByPostIdOrderByCreatedAtDesc(postId);
+        Long likeCount = postLikeRepository.countPostLikesByPostId(post.getId());
 
-        return ResponsePosWithCommentstDto.builder()
+        return ResponsePostWithCommentsDto.builder()
                 .post(post)
+                .likeCount(likeCount)
                 .comments(comments)
                 .build();
     }
@@ -57,7 +61,15 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<ResponsePostDto> getPosts(final Pageable pageable) {
         Page<Post> posts = postRepository.findAll(pageable);
-        return ResponsePostDto.of(posts);
+
+        List<ResponsePostDto> newContent = new ArrayList<>();
+
+        for (Post post : posts.getContent()) {
+            Long likeCount = postLikeRepository.countPostLikesByPostId(post.getId());
+            newContent.add(ResponsePostDto.of(post, likeCount));
+        }
+
+        return new PageImpl<>(newContent, pageable, posts.getTotalElements());
     }
 
     @Transactional
